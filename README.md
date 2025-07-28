@@ -28,29 +28,6 @@ docker build -t round1b:latest .
 docker run -v ${PWD}:/app round1b:latest
 ```
 
-
-### Expected Output
-```
-Persona-Driven Document Intelligence Starting 
-Configuration loaded successfully
-Processing documents/South of France - Cities.pdf...
-Processing documents/South of France - Cuisine.pdf...
-Processing documents/South of France - History.pdf...
-Processing documents/South of France - Restaurants and Hotels.pdf...
-Processing documents/South of France - Things to Do.pdf...
-Processing documents/South of France - Tips and Tricks.pdf...
-Processing documents/South of France - Traditions and Culture.pdf...
-
-Extracted 73 sections from 7 documents
-Ranked 15 sections
-
-Processing Complete 
-Processing time: 9.59 seconds
-Extracted sections: 15
-Refined sections: 15
-Output saved to: challenge1b_output.json
-```
-
 ## Input Configuration
 
 The system reads from `input_config.json`. 
