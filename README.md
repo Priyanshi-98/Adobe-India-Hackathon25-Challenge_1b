@@ -11,11 +11,11 @@ A persona-driven document intelligence system that extracts and prioritizes the 
 
 ### Build and Run
 
-- **Build the Docker image**
-    docker build -t round1b:latest .
+- **Build the Docker image**:
+    - docker build -t round1b:latest .
 
-- **Run the container with volume mounting**
-    docker run -v ${PWD}:/app round1b:latest
+- **Run the container with volume mounting**:
+    - docker run -v ${PWD}:/app round1b:latest
 
 ## Input Format
 
