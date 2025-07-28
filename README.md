@@ -1,7 +1,7 @@
 # Adobe-India-Hackathon25-Challenge_1b
 
 ## Overview
-A persona-driven document intelligence system that extracts and prioritizes relevant sections from PDF documents based on user persona and job requirements.
+A persona-driven document intelligence system that extracts and prioritizes the most relevant sections from a collection of documents based on a specific persona and their job-to-be-done.
 
 ## System Requirements
 - **CPU Only**: No GPU required
@@ -17,9 +17,6 @@ A persona-driven document intelligence system that extracts and prioritizes rele
 - PDF documents placed in the `documents/` folder
 
 ### Build and Run
-
-## Navigate to project directory
-cd C:\Users\sneha\adobe_hackathon\round_1b
 
 ## Build the Docker image
 docker build -t round1b:latest .
