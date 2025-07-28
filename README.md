@@ -26,16 +26,15 @@ docker build -t round1b:latest .
 
 # Run the container with volume mounting
 docker run -v ${PWD}:/app round1b:latest
-```
 
-## Input Configuration
+## Input Format
 
 The system reads from `input_config.json`. 
 - **documents**: List of PDF file paths (relative to project root)
 - **persona**: User role
 - **job_to_be_done**: Specific task description
 
-Example configuration:
+### Input Configuration
 ```json
 {
   "documents": [
