@@ -1,4 +1,4 @@
-# Document Intelligence System - Round 1B
+# Adobe-India-Hackathon25-Challenge_1b
 
 ## Overview
 A persona-driven document intelligence system that extracts and prioritizes relevant sections from PDF documents based on user persona and job requirements.
@@ -31,7 +31,7 @@ docker run -v ${PWD}:/app round1b:latest
 
 ### Expected Output
 ```
-=== Document Intelligence System Starting ===
+Persona-Driven Document Intelligence Starting 
 Configuration loaded successfully
 Processing documents/South of France - Cities.pdf...
 Processing documents/South of France - Cuisine.pdf...
@@ -44,7 +44,7 @@ Processing documents/South of France - Traditions and Culture.pdf...
 Extracted 73 sections from 7 documents
 Ranked 15 sections
 
-=== Processing Complete ===
+Processing Complete 
 Processing time: 9.59 seconds
 Extracted sections: 15
 Refined sections: 15
