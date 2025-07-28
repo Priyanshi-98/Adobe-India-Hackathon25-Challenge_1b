@@ -3,13 +3,6 @@
 ## Overview
 A persona-driven document intelligence system that extracts and prioritizes the most relevant sections from a collection of documents based on a specific persona and their job-to-be-done.
 
-## System Requirements
-- **CPU Only**: No GPU required
-- **Model Size**: < 100MB (uses TF-IDF, no large language models)
-- **Processing Time**: < 60 seconds for 3-5 documents
-- **No Internet**: Fully offline processing
-- **Docker**: Required for execution
-
 ## Docker Execution
 
 ### Prerequisites
