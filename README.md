@@ -18,13 +18,13 @@ A persona-driven document intelligence system that extracts and prioritizes rele
 
 ### Build and Run
 
-# Navigate to project directory
+## Navigate to project directory
 cd C:\Users\sneha\adobe_hackathon\round_1b
 
-# Build the Docker image
+## Build the Docker image
 docker build -t round1b:latest .
 
-# Run the container with volume mounting
+## Run the container with volume mounting
 docker run -v ${PWD}:/app round1b:latest
 
 ## Input Format
