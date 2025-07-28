@@ -42,10 +42,10 @@ class DocumentIntelligenceSystem:
         """Split text into logical sections using multiple strategies"""
         sections = []
         
-        # Clean and normalize text
+        
         text = re.sub(r'\s+', ' ', text).strip()
         
-        # Strategy 1: Split by section headers
+        
         section_patterns = [
             r'(?:^|\n)([A-Z][A-Z\s]{2,50})\n',  # ALL CAPS headers
             r'(?:^|\n)(\d+\.?\s+[A-Z][^.!?]*)\n',  # Numbered sections
@@ -53,21 +53,21 @@ class DocumentIntelligenceSystem:
             r'(?:^|\n)([IVX]+\.\s+[A-Z][^.!?]*)\n'  # Roman numerals
         ]
         
-        # Find section boundaries
+        
         boundaries = []
         for pattern in section_patterns:
             matches = list(re.finditer(pattern, text, re.IGNORECASE | re.MULTILINE))
             for match in matches:
                 boundaries.append((match.start(), match.group(1).strip()))
         
-        # Sort boundaries by position
+        
         boundaries.sort(key=lambda x: x[0])
         
         if not boundaries:
             # Fallback: split by paragraphs
             return self._split_by_paragraphs(text, page_num)
         
-        # Create sections based on boundaries
+        
         current_section = "Introduction"
         start_pos = 0
         
@@ -86,7 +86,7 @@ class DocumentIntelligenceSystem:
             current_section = title
             start_pos = pos
         
-        # Add final section
+        
         final_text = text[start_pos:].strip()
         if len(final_text) > 100:
             sections.append({
@@ -120,12 +120,12 @@ class DocumentIntelligenceSystem:
         if not sections:
             return []
         
-        # Create comprehensive query from persona and job
+        
         persona_role = persona.get('role', '')
         persona_expertise = persona.get('expertise', '')
         persona_focus = ' '.join(persona.get('focus_areas', []))
         
-        # Handle travel planning specific terms
+        
         if 'travel' in persona_role.lower() or 'planner' in persona_role.lower():
             travel_keywords = ['itinerary', 'activities', 'attractions', 'restaurants', 'hotels', 'transportation', 'budget', 'schedule']
             persona_expertise += ' ' + ' '.join(travel_keywords)
@@ -133,7 +133,7 @@ class DocumentIntelligenceSystem:
         persona_text = f"{persona_role} {persona_expertise} {persona_focus}"
         query = f"{persona_text} {job_description}"
         
-        # Get all texts for vectorization
+        
         section_texts = [s['text'] for s in sections]
         all_texts = section_texts + [query]
         
@@ -141,35 +141,35 @@ class DocumentIntelligenceSystem:
             # Fit TF-IDF and transform
             tfidf_matrix = self.vectorizer.fit_transform(all_texts)
             
-            # Query is the last vector
+            
             query_vector = tfidf_matrix[-1]
             section_vectors = tfidf_matrix[:-1]
             
-            # Calculate similarities
+            
             similarities = cosine_similarity(query_vector, section_vectors)[0]
             
-            # Add persona-specific boost for travel planning
+            
             travel_boost_terms = ['restaurant', 'hotel', 'attraction', 'activity', 'food', 'culture', 'history', 'city', 'place', 'visit', 'trip', 'travel']
             group_boost_terms = ['group', 'friends', 'college', 'young', 'budget', 'affordable', 'student']
             
             for i, section in enumerate(sections):
                 base_score = similarities[i]
                 
-                # Boost score for travel-related content
+                
                 boost = 0
                 section_lower = section['text'].lower()
                 
-                # Travel content boost
+                
                 for term in travel_boost_terms:
                     if term in section_lower:
                         boost += 0.1
                 
-                # Group travel boost
+                
                 for term in group_boost_terms:
                     if term in section_lower:
                         boost += 0.05
                 
-                # Section title boost for travel planning
+                
                 title_lower = section['section_title'].lower()
                 if any(term in title_lower for term in ['restaurant', 'hotel', 'activity', 'attraction', 'thing to do', 'tip']):
                     boost += 0.2
@@ -178,10 +178,10 @@ class DocumentIntelligenceSystem:
                 section['relevance_score'] = float(final_score)
                 section['importance_rank'] = 0  # Will be set after sorting
             
-            # Sort by relevance
+            
             sections.sort(key=lambda x: x['relevance_score'], reverse=True)
             
-            # Assign importance ranks
+            
             for i, section in enumerate(sections):
                 section['importance_rank'] = i + 1
                 
@@ -192,26 +192,26 @@ class DocumentIntelligenceSystem:
                 section['relevance_score'] = 1.0 / (i + 1)
                 section['importance_rank'] = i + 1
         
-        return sections[:15]  # Return top 15 sections
+        return sections[:15]  
     
     def refine_sections(self, sections: List[Dict], job_description: str) -> List[Dict]:
         """Refine sections for sub-section analysis"""
         refined_sections = []
         
-        # Extract key terms from job description
+        
         job_terms = set(re.findall(r'\b[a-zA-Z]{4,}\b', job_description.lower()))
         
         for section in sections:
             sentences = [s.strip() for s in re.split(r'[.!?]+', section['text']) if len(s.strip()) > 20]
             
-            # Score sentences based on job relevance
+            
             scored_sentences = []
             for sentence in sentences:
                 sentence_lower = sentence.lower()
                 score = sum(1 for term in job_terms if term in sentence_lower)
                 scored_sentences.append((score, sentence))
             
-            # Sort by relevance and take top sentences
+            
             scored_sentences.sort(key=lambda x: x[0], reverse=True)
             top_sentences = [s[1] for s in scored_sentences[:3]]
             
@@ -237,13 +237,13 @@ class DocumentIntelligenceSystem:
         start_time = time.time()
         
         try:
-            # Load configuration
+            
             with open(config_path, 'r', encoding='utf-8') as f:
                 config = json.load(f)
             
             print("Configuration loaded successfully")
             
-            # Handle different input formats
+            
             if 'challenge_info' in config:
                 # New format with challenge_info
                 documents = config['documents']
@@ -257,7 +257,7 @@ class DocumentIntelligenceSystem:
                 job_description = config['job_to_be_done']
                 challenge_info = {}
             
-            # Extract text from all documents
+            
             all_sections = []
             processed_docs = []
             
@@ -272,17 +272,17 @@ class DocumentIntelligenceSystem:
             
             print(f"Extracted {len(all_sections)} sections from {len(processed_docs)} documents")
             
-            # Rank sections by relevance
+            
             ranked_sections = self.rank_sections_by_relevance(
                 all_sections, persona, job_description
             )
             
             print(f"Ranked {len(ranked_sections)} sections")
             
-            # Refine sections
+            
             refined_sections = self.refine_sections(ranked_sections, job_description)
             
-            # Prepare output
+            
             output = {
                 "metadata": {
                     "input_documents": processed_docs,
@@ -303,7 +303,7 @@ class DocumentIntelligenceSystem:
                 "sub_section_analysis": refined_sections
             }
             
-            # Add challenge info if present
+            
             if challenge_info:
                 output["metadata"]["challenge_info"] = challenge_info
             
@@ -331,7 +331,7 @@ def main():
     system = DocumentIntelligenceSystem()
     result = system.process_documents('input_config.json')
     
-    # Save output
+    
     with open('challenge1b_output.json', 'w', encoding='utf-8') as f:
         json.dump(result, f, indent=2, ensure_ascii=False)
     
