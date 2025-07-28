@@ -1,9 +1,4 @@
 {
-    "challenge_info": {
-        "challenge_id": "round_1b_002",
-        "test_case_name": "travel_planner",
-        "description": "France Travel"
-    },
     "documents": [
         "documents/South of France - Cities.pdf",
         "documents/South of France - Cuisine.pdf",
